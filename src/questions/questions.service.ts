@@ -75,18 +75,28 @@ export class QuestionsService {
     },
   ];
 
+  // get questions for the test
   getQuestions(): Question[] {
-    const testLength = 4;
+    const indexes = this.getIndexes();
     const questionsTest: Array<Question> = [];
-    const len = this.questions.length;
-    for (let index = 0; index < testLength; index++) {
-      const randomIndex = Math.floor(Math.random() * (len - index));
-      const question: Question = this.questions.find(
-        (q) => q.id === randomIndex,
-      );
-      questionsTest.push(question);
-    }
-    console.log(JSON.stringify(questionsTest));
+    indexes.forEach((index) => questionsTest.push(this.questions[index]));
+    //console.log(JSON.stringify(questionsTest));
     return questionsTest;
+  }
+
+  // get random indexes
+  getIndexes(): number[] {
+    const len = this.questions.length;
+    const testLength = 4;
+    let index = 0;
+    const indexes = [];
+    while (index < testLength) {
+      const randomIndex = Math.floor(Math.random() * (len - index));
+      if (indexes.indexOf(randomIndex) === -1) {
+        indexes.push(randomIndex);
+        ++index;
+      }
+    }
+    return indexes;
   }
 }
